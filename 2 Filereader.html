@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <link rel="stylesheet" href="base.css"/>
+    <style>
+        li {
+
+            display: inline-block;
+        }
+        img {
+            display: inline-block;
+            width: 200px;
+            padding: 0.5em;
+            margin: 1em;
+        }
+    </style>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+
+            var ul = document.querySelector('ul');
+
+            document.querySelector('input[type="file"]').addEventListener('change', function () {
+                Array.prototype.forEach.call(this.files, function (file) {
+                    var reader = new FileReader();
+                    reader.addEventListener('loadend', function () {
+                        var li = createElement('li', ul);
+                        var img = createElement('img', li);
+                        img.src = this.result;
+                    });
+                    reader.addEventListener('error', function (err) {
+                        console.log(err);
+                    });
+                    reader.readAsDataURL(file);
+                });
+            });
+
+            function createElement(elementType, parent, className, innerHTML, custom) {
+                var element = document.createElement(elementType);
+                if (parent) parent.appendChild(element);
+                if (className) element.className = className;
+                if (innerHTML) element.innerHTML = innerHTML;
+
+                if (typeof custom !== 'undefined') {
+                    for (var prop in custom) {
+                        element.setAttribute(prop, custom[prop]);
+                    }
+                }
+
+                return element;
+            }
+        });
+    </script>
+</head>
+<body>
+    <h1>Take multiple image files as input</h1>
+    <div>and print them inside a container</div>
+    <div>
+        <input type="file" multiple/>
+    </div>
+    <ul>
+        <!--list of image elements that were selected-->
+    </ul>
+
+</body>
+</html>

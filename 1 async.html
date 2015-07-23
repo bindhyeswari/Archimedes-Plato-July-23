@@ -29,7 +29,32 @@
 
         });*/
 
+        function getPromise(i) {
+            // perform async operations
+            // ES6 promises
+            return new Promise(function (resolve, reject) {
+                // async operations
+                    randomPrint(i, resolve);
+            });
+        }
 
+        var promise1 = getPromise(1);
+        promise1.then(function (data) {
+            console.log('printing from promise1.then ', data);
+        });
+
+        promise1.then(function (data) {
+            console.log('printing from promise1.then(2) ', data);
+        });
+        var promise2 = getPromise(2);
+        var promise3 = getPromise(3);
+
+
+        var cumulative_promise = Promise.all([promise1, promise2, promise3]);
+
+        cumulative_promise.then(function (data) {
+            console.log('printing the cumulative promise: ', data);
+        });
 
 
 

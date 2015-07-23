@@ -7,19 +7,29 @@
 
         var terms = ['nodejs', 'angular', 'iot'];
 
-        var xhr = new XMLHttpRequest();
-        xhr.open('get', 'https://api.github.com/search/repositories?q=nodejs');
-        xhr.addEventListener('readystatechange', function () {
-            if (xhr.readyState === 4) {
-                //call is complete
-                if (xhr.status === 200) {
-                    console.log(xhr.responseText);
-                } else {
-                    console.log('something went wrong!');
-                }
-            }
+        Promise.all(terms.map(createAJAXPromise)).then(function (data) {
+            console.log(data);
+        }, function (xhr) {
+            console.log(xhr);
         });
-        xhr.send();
+
+        function createAJAXPromise(term) {
+            return new Promise(function (resolve, reject) {
+                var xhr = new XMLHttpRequest();
+                xhr.open('get', 'https://api.github.com/search/repositories?q=' + term);
+                xhr.addEventListener('readystatechange', function () {
+                    if (xhr.readyState === 4) {
+                        //call is complete
+                        if (xhr.status === 200) {
+                            resolve(JSON.parse(xhr.responseText));
+                        } else {
+                            reject(xhr);
+                        }
+                    }
+                });
+                xhr.send();
+            });
+        }
 
     </script>
 </head>

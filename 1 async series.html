@@ -40,7 +40,19 @@
 
         var arr = [1,2,3,4,5];
         function runAsyncInSeries(arr) {
-            //
+
+            arr.reduce(function () {
+
+            }, Promise.resolve());
+
+            function getPromise(i) {
+                // perform async operations
+                // ES6 promises
+                return new Promise(function (resolve, reject) {
+                    // async operations
+                    randomPrint(i, resolve);
+                });
+            }
         }
 
 

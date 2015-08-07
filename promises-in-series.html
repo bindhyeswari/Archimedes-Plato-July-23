@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <script src="bower_components/jquery/dist/jquery.js"></script>
+    <script>
+
+        $(function () {
+            var terms = ['nodejs', 'mongodb', 'hbase'];
+
+            /*Promise.all(terms.map(createPromise)).then(function (data) {
+                console.log(data);
+            });*/
+
+            var results = [];
+
+            terms.reduce(function (promise, term) {
+                return promise.then(function (data) {
+                    results.push(data);
+                    return createPromise(term);
+                });
+            }, Promise.resolve(true)).then(function (data) {
+                results.push(data);
+                console.log(results);
+            }); // Promise.resolve(true) --> returns a new resolved promise
+
+            function createPromise(term) {
+                var url = 'https://api.github.com/search/repositories?q=' + term;
+                return new Promise(function (resolve, reject) {
+                    $.getJSON(url, function (data) {
+                        resolve(data);
+                    });
+                });
+            }
+        });
+
+    </script>
+</head>
+<body>
+
+</body>
+</html>
